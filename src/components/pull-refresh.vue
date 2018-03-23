@@ -74,9 +74,12 @@ export default {
         },
         getStatus (height, isLoading) {
             this.height = height
-            return status = isLoading
+            const status = isLoading
                 ? 'loading' : height === 0
                     ? 'normal' : height < this.headHeight ? 'pulling' : 'loosing'
+            if (status !== this.status) {
+                this.status = status
+            }
         },
         ease (height) {
             const { headHeight } = this
@@ -84,7 +87,7 @@ export default {
                 ? height
                 : height < headHeight * 2
                     ? Math.round(headHeight + (height - headHeight) / 2)
-                    : Math.round(height * 1.5 +(height - headHeight * 2) / 4)
+                    : Math.round(height * 1.5 + (height - headHeight * 2) / 4)
         }
     },
     computed: {
@@ -96,7 +99,7 @@ export default {
         }
     },
     watch: {
-        value(val) {
+        value (val) {
             console.log(val)
             this.duration = this.animationDuration
             this.getStatus(val ? this.headHeight : 0, val)

@@ -1,5 +1,5 @@
 <template>
-  <pullRefresh>
+  <pullRefresh v-model="isLoading" @refresh="onRefresh">
       <div>pullRefresh</div>
   </pullRefresh>
 </template>
@@ -10,12 +10,20 @@ export default {
     name: 'index-demo',
     data () {
         return {
+            isLoading: false
         }
     },
     components: {
         pullRefresh
     },
-    method: {
+    methods: {
+        onRefresh () {
+            setTimeout(() => {
+                console.log('刷新成功')
+                this.isLoading = false;
+                // this.count++;
+            }, 500);
+        }
     },
     computed: {
     },
