@@ -1,5 +1,5 @@
 <template>
-  <pullRefresh v-model="isLoading" @refresh="onRefresh">
+  <pullRefresh  v-model="isLoading" @refresh="onRefresh">
       <div>pullRefresh</div>
   </pullRefresh>
 </template>
@@ -20,9 +20,9 @@ export default {
         onRefresh () {
             setTimeout(() => {
                 console.log('刷新成功')
-                this.isLoading = false;
+                this.isLoading = false
                 // this.count++;
-            }, 500);
+            }, 500)
         }
     },
     computed: {

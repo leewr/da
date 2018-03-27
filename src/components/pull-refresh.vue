@@ -5,6 +5,7 @@
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
         @touchend="onTouchEnd"
+        @touchcancel="onTouchEnd"
         >
         <div class="da-pull-refresh__head"></div>
         <slot></slot>
@@ -13,9 +14,14 @@
 </template>
 
 <script>
+import scrollUtils from '@/utils/scroll'
 export default {
     name: 'pull-refresh',
     props: {
+        value: {
+            type: Boolean,
+            required: true
+        },
         headHeight: {
             type: Number,
             default: 50
@@ -23,10 +29,6 @@ export default {
         animationDuration: {
             type: Number,
             default: 300
-        },
-        value: {
-            type: Boolean,
-            require: true
         }
     },
     data () {
@@ -43,11 +45,14 @@ export default {
             this.startY = event.touches[0].clientY
         },
         onTouchMove (event) {
+            if (this.status === 'loading') return
             this.deltaY = event.touches[0].clientY - this.startY
             // this.deltaX = event.touches[0].clientX - this.startX
             this.direction = this.getDirection(event.touches[0])
+
             if (this.deltaY >= 0) {
                 if (this.direction === 'vertical') {
+                    console.log(this.deltaY)
                     this.getStatus(this.ease(this.deltaY))
                     event.preventDefault()
                 }
@@ -57,10 +62,10 @@ export default {
             console.log(this.deltaY)
             if (this.deltaY) {
                 this.duration = this.animationDuration
-                console.log(this.duration)
+                console.log(this.status)
                 if (this.status === 'loosing') {
                     this.getStatus(this.headHeight, true)
-                    // this.$emit('input', true)
+                    this.$emit('input', true) // 通过$emit('input')改变data的值 触发v-model 中 的值改变
                     this.$emit('refresh')
                 } else {
                      this.getStatus(0)
@@ -76,10 +81,17 @@ export default {
             this.height = height
             const status = isLoading
                 ? 'loading' : height === 0
-                    ? 'normal' : height < this.headHeight ? 'pulling' : 'loosing'
+                    ? 'normal' : height < this.headHeight 
+                        ? 'pulling' : 'loosing'
+            
+            console.log(isLoading)
             if (status !== this.status) {
                 this.status = status
             }
+        },
+        getCeiling () {
+            this.ceiling = scrollUtils.getScrollTop(this.scrollEl) === 0
+            return this.ceiling
         },
         ease (height) {
             const { headHeight } = this
@@ -99,13 +111,15 @@ export default {
         }
     },
     watch: {
-        value (val) {
-            console.log(val)
+        value(val) {
+            // debugger;
             this.duration = this.animationDuration
             this.getStatus(val ? this.headHeight : 0, val)
         }
     },
-    mouted () {
+    mounted () {
+        console.log(this.value)
+        this.scrollEl = scrollUtils.getScrollEventTarget(this.$el)
     }
 }
 </script>
