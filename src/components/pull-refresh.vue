@@ -81,9 +81,8 @@ export default {
             this.height = height
             const status = isLoading
                 ? 'loading' : height === 0
-                    ? 'normal' : height < this.headHeight 
+                    ? 'normal' : height < this.headHeight
                         ? 'pulling' : 'loosing'
-            
             console.log(isLoading)
             if (status !== this.status) {
                 this.status = status

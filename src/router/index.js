@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import pullRefreshdemo from '@/page/index'
-
+import popupdemo from '@/page/overlay'
+import swipe from '@/page/swipePage'
 Vue.use(Router)
 
 export default new Router({
@@ -16,6 +17,16 @@ export default new Router({
       path: '/pull-refresh-demo',
       name: 'pull-refresh-demo',
       component: pullRefreshdemo
+    },
+    {
+      path: '/popup',
+      name: 'popup',
+      component: popupdemo
+    },
+    {
+      path: '/swipe',
+      name: 'swipe',
+      component: swipe
     }
   ]
 })
