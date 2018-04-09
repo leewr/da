@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import pullRefreshdemo from '@/page/index'
 import popupdemo from '@/page/overlay'
 import swipe from '@/page/swipePage'
+import picker from '@/page/picker'
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +28,11 @@ export default new Router({
       path: '/swipe',
       name: 'swipe',
       component: swipe
+    },
+    {
+      path: '/picker',
+      name: 'picker',
+      component: picker
     }
   ]
 })

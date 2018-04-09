@@ -11,8 +11,16 @@ export default {
 </script>
 
 <style>
+* {
+  margin: 0;
+  padding: 0;
+}
+li{
+  list-style-type: none
+}
 body{
   margin: 0;
+  line-height: 44px;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
