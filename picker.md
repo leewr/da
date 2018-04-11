@@ -263,7 +263,6 @@ onTouchEnd (event) {
 
 
 ```
->>>>>>> fa5dc7816302ded1973ee00a13978b271fb3fb55
 <template>
   <div>
     <ul>
@@ -289,7 +288,6 @@ onTouchEnd (event) {
   </div>
 </template>
 ```
-<<<<<<< HEAD
 
 # 状态改变
 其中最核心的就是每次pickerItem的改变。我们给每一个Item一个index，setIndex(index, userAction) 为核心状态改变函数，userAction 为用户手动点击触摸选择改变,为用户触发一个change事件。
@@ -329,7 +327,6 @@ onTouchEnd (event) {
 ```
 通过touchStart获取初始化的位置，以及当前firstOffset，touchMove的时候计算this.offset的位置，并且限制最大滑动范围。最后通过touchEnd 计算出滑动后的Index，调用setIndex以及duration时间完成切换
 
-=======
 
 # 状态改变
 其中最核心的就是每次pickerItem的改变。我们给每一个Item一个index，setIndex(index, userAction) 为核心状态改变函数，userAction 为用户手动点击触摸选择改变,为用户触发一个change事件。
@@ -367,9 +364,8 @@ onTouchEnd (event) {
 }
 
 ```
-通过touchStart获取初始化的位置，以及当前firstOffset，touchMove的时候计算this.offset的位置，并且限制最大滑动范围。最后通过touchEnd 计算出滑动后的Index，调用setIndex以及duration时间完成切换
+o通过touchStart获取初始化的位置，以及当前firstOffset，touchMove的时候计算this.offset的位置，并且限制最大滑动范围。最后通过touchEnd 计算出滑动后的Index，调用setIndex以及duration时间完成切换
 
->>>>>>> fa5dc7816302ded1973ee00a13978b271fb3fb55
 未完
 
 # 操作事件
