@@ -1,5 +1,5 @@
 <template>
-  <picker @change="onChange()" :columns="columns" :showToolbar="true" :title="title"></picker>
+  <picker @cancel="onCancel" @change="onChange()" :columns="columns" :showToolbar="true" :title="title"></picker>
 </template>
 
 <script>
@@ -18,6 +18,9 @@ export default {
     methods: {
         onChange () {
             console.log(1)
+        },
+        onCancel(data) {
+            console.log(data)
         }
     },
     computed: {

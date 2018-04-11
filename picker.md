@@ -102,14 +102,11 @@ export default {
   data () {
     return {
       isSimple: false
-<<<<<<< HEAD
-=======
     }
   },
   computed: {
     isSimple () {
       return this.columns.length && !this.columns[0].values
->>>>>>> fa5dc7816302ded1973ee00a13978b271fb3fb55
     }
   }
   created () {

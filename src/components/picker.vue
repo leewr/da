@@ -2,9 +2,9 @@
   <div class="da-picker">
     <div class="da-picker__toolbar" v-if="showToolbar">
       <slot>
-        <div class="da-picker__cancle">{{cancelButtonText}}</div>
+        <div class="da-picker__cancel" @click="emit('cancel')">{{cancelButtonText}}</div>
         <div class="da-picker__text">{{title}}</div>
-        <div class="da-picker__confirm">{{confirmButtonText}}</div>
+        <div class="da-picker__confirm" @click="emit('confirm')">{{confirmButtonText}}</div>
       </slot>
     </div>
     <div class="da-picker__columns" @touchmove.prevent :style="columnsStyle">
@@ -80,6 +80,15 @@ export default {
       this.currentColumns = isSimpleColumn ? [{'values': this.columns}] : this.columns
       console.log(this.currentColumns)
     },
+    emit(event) {
+      console.log(event)
+      this.$emit(event, this)
+      if (this.isSimpleColumn) {
+        this.$emit(event, this.getColumnValue(0), this.getColumnIndex(0))
+      } else {
+        this.$emit(event, this.getValues(), this.getIndexs())
+      }
+    },
     onChange(columnIndex) {
       console.log(columnIndex)
     },
@@ -88,6 +97,17 @@ export default {
     },
     columnStyle () {
       console.log(1)
+    },
+    // 获取index列数据
+    getColumn(index) {
+      return this.children[index]
+    },
+    // 获取某列的值
+    getColumnValue(index) {
+      return (this.getColumn(index) || {}).currentValue
+    },
+    getValues() {
+      return this.children.map(child => child.currentValue)
     }
   }
 }
@@ -105,7 +125,7 @@ export default {
     border: 1px solid #e5e5e5;
     border-left: 0;
     border-right: 0;
-    .da-picker__cancle,
+    .da-picker__cancel,
     .da-picker__confirm{
       color: #38f;
       padding: 0 15px;
