@@ -6,6 +6,13 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+import VueToast from '@/components/Toast/Toast'
+Toast.install = () => {
+  Vue.use(VueToast)
+}
+
+Vue.prototype.$toast = Toast
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

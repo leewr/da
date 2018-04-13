@@ -17,7 +17,7 @@ export default {
     name: 'popup',
     minins: [Popup],
     props: {
-
+        
     },
     data () {
         const transition = this.transition || (this.position === '' ? 'van-fade' : `popup-slide-${this.position}`)

@@ -5,6 +5,7 @@ import pullRefreshdemo from '@/page/index'
 import popupdemo from '@/page/overlay'
 import swipe from '@/page/swipePage'
 import picker from '@/page/picker'
+import Toast from '@/page/toast'
 Vue.use(Router)
 
 export default new Router({
@@ -33,6 +34,11 @@ export default new Router({
       path: '/picker',
       name: 'picker',
       component: picker
+    },
+    {
+      path: '/Toast',
+      name: 'Toast',
+      component: Toast
     }
   ]
 })
