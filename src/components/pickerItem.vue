@@ -63,7 +63,7 @@ export default {
     onTouchMove (event) {
       const deltaY = event.touches[0].clientY - this.startY
       this.offset = range(this.startOffset + deltaY, [
-        -(this.count * this.itemHeight),
+        -this.count * this.itemHeight,
         this.itemHeight
       ]) // 可拉动的范围 向下拉最多一个itemHeight 下上最大距离为 -count * itemHeight
     },

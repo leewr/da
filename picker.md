@@ -112,6 +112,14 @@ export default {
   created () {
     this.initColumn()
   },
+  computed: {
+    isSimple () {
+      return this.columns.length && !this.columns[0].values
+    }
+  }
+  created () {
+    this.initColumn()
+  },
   methods: {
     initColumn () {
       // 数据类型判断初始化结构数据
@@ -133,6 +141,108 @@ computed: {
 }
 ```
 初始化样式后将高度添加到da_columns 上。
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+下面我们将pickerItem渲染的内容抽象出来为单独的组件。这时我们修改picker的组件为
+```
+<template>
+  <div class="da-picker">
+    <div class="da-picker__toolbar">
+    </div>
+    <div class="da-picker__column" :style="calcHeight">
+      <pickItem :column="column"></pickItem>
+      <div class="da-iframe da-1pxborder--top-bottom"></div>
+    </div>
+  </div>
+</template>
+```
+
+
+```
+<template>
+  <div>
+    <ul>
+      <li>item1</li>
+      <li>item2</li>
+      <li>item3</li>
+    </ul>
+  </div>
+</template>
+```
+为上面的html添加上数据、以及需要的touch相关事件.
+```
+<template>
+  <div>
+    <ul 
+      @touchstart="onTouchStart"
+      @touchmove="onTouchMove"
+      @touchend="onTouchEnd"
+      @touchcancel="onTouchEnd"
+    >
+      <li v-for="item in options" :key="item">{{item}}</li>
+    </ul>
+  </div>
+</template>
+```
+
+# 状态改变
+其中最核心的就是每次pickerItem的改变。我们给每一个Item一个index，setIndex(index, userAction) 为核心状态改变函数，userAction 为用户手动点击触摸选择改变,为用户触发一个change事件。
+setIndex (index, userAction) {
+  this.offset = - index * this.itemHeight
+  if(index !== this.currentIndex) {
+    userAction && this.$emit('change', index)
+  }
+}
+这样我们得到了picker最核心的一个方法。下面我们来分析每一次index改变时候需要进行的样式位置计算。
+
+1、初始化时候ul元素会有一个初始化baseOffset。随后每次index的改变ui的offset都为 offset + baseOffset。
+2、那么重点就是如何计算offset。
+    我们每次操作的时候touchStart 需要记录当前的 firstOffset 
+    然后是touchMove移动的deltaY 此时offset = firstOffset + deltaY
+    最后touchEnd结束的时候 通过offset的值计算出index，最后调用setIndex(index, userAction)
+
+# 用户操作
+```
+onTouchStart (event) {
+  this.startY = event.touches[0].clientY
+  this.firstOffset = this.offset
+  this.duration = 0
+},
+onTouchMove (event) {
+  const deltaY = event.touches[0].clientY - this.startY
+  this.offset = range(this.firstOffset + deltaY, [- this.itemHeight * this.count, this.itemHeight ]) // 最大offset 范围需要注意，ul 高度为 (this.count - 1) * this.itemHeight ,由于在前面已经对位置进行了初始化，ul上下可偏移的位置为自身位置加上一个itemHeight
+},
+onTouchEnd (event) {
+  this.duration = 200
+  const index = rang(Math.round(this.offset / this.itemHeight), [0, this.count - 1])
+  this.setIndex(index, true)
+}
+
+```
+通过touchStart获取初始化的位置，以及当前firstOffset，touchMove的时候计算this.offset的位置，并且限制最大滑动范围。最后通过touchEnd 计算出滑动后的Index，调用setIndex以及duration时间完成切换
+
+未完
+=======
+
+下面我们将pickerItem渲染的内容抽象出来为单独的组件。这时我们修改picker的组件为
+```
+<template>
+  <div class="da-picker">
+    <div class="da-picker__toolbar">
+    </div>
+    <div class="da-picker__column" :style="calcHeight">
+      <pickItem :column="column"></pickItem>
+      <div class="da-iframe da-1pxborder--top-bottom"></div>
+    </div>
+  </div>
+</template>
+```
+
+>>>>>>> fa5dc7816302ded1973ee00a13978b271fb3fb55
+
+```
+=======
 
 下面我们将pickerItem渲染的内容抽象出来为单独的组件。这时我们修改picker的组件为
 ```
@@ -213,6 +323,45 @@ onTouchEnd (event) {
 
 ```
 通过touchStart获取初始化的位置，以及当前firstOffset，touchMove的时候计算this.offset的位置，并且限制最大滑动范围。最后通过touchEnd 计算出滑动后的Index，调用setIndex以及duration时间完成切换
+
+
+# 状态改变
+其中最核心的就是每次pickerItem的改变。我们给每一个Item一个index，setIndex(index, userAction) 为核心状态改变函数，userAction 为用户手动点击触摸选择改变,为用户触发一个change事件。
+```
+setIndex (index, userAction) {
+  this.offset = - index * this.itemHeight
+  if(index !== this.currentIndex) {
+    userAction && this.$emit('change', index)
+  }
+}
+```
+这样我们得到了picker最核心的一个方法。下面我们来分析每一次index改变时候需要进行的样式位置计算。
+
+- 初始化时候ul元素会有一个初始化baseOffset。随后每次index的改变ui的offset都为 offset + baseOffset。
+- 那么重点就是如何计算offset。
+  - 我们每次操作的时候touchStart 需要记录当前的 firstOffset 
+   - 然后是touchMove移动的deltaY 此时offset = firstOffset + deltaY
+   - 最后touchEnd结束的时候 通过offset的值计算出index，最后调用setIndex(index, userAction)
+
+# 用户操作
+```
+onTouchStart (event) {
+  this.startY = event.touches[0].clientY
+  this.firstOffset = this.offset
+  this.duration = 0
+},
+onTouchMove (event) {
+  const deltaY = event.touches[0].clientY - this.startY
+  this.offset = range(this.firstOffset + deltaY, [- this.itemHeight * this.count, this.itemHeight ]) // 最大offset 范围需要注意，ul 高度为 (this.count - 1) * this.itemHeight ,由于在前面已经对位置进行了初始化，ul上下可偏移的位置为自身位置加上一个itemHeight
+},
+onTouchEnd (event) {
+  this.duration = 200
+  const index = rang(Math.round(this.offset / this.itemHeight), [0, this.count - 1])
+  this.setIndex(index, true)
+}
+
+```
+o通过touchStart获取初始化的位置，以及当前firstOffset，touchMove的时候计算this.offset的位置，并且限制最大滑动范围。最后通过touchEnd 计算出滑动后的Index，调用setIndex以及duration时间完成切换
 
 未完
 
