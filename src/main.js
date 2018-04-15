@@ -3,15 +3,23 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueToast from '@/components/Toast'
 
 Vue.config.productionTip = false
 
-import VueToast from '@/components/Toast/Toast'
-Toast.install = () => {
-  Vue.use(VueToast)
+const components = [
+  VueToast
+]
+
+const install = Vue => {
+  components.forEach(Compontent => {
+    Vue.use(Compontent)
+  })
 }
 
-Vue.prototype.$toast = Toast
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue)
+}
 
 /* eslint-disable no-new */
 new Vue({
